@@ -7,6 +7,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Hff.JwtProje.Api.CustomFilters;
 using Hff.JwtProje.Business.Containers.MicrosoftIoc;
+using Hff.JwtProje.Business.StringInfos;
 using Hff.JwtProje.Business.ValidationRules.FluentValidation;
 using Hff.JwtProje.Entities.Dtos.ProductDtos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -39,11 +40,14 @@ namespace Hff.JwtProje.Api
                 opt.RequireHttpsMetadata = false;
                 opt.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidIssuer = "http://localhost",
-                    ValidAudience = "http://localhost",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("furkanfurkanfurkan1")),
-                    ValidateIssuerSigningKey =true,
-                    ValidateLifetime = true
+                    ValidIssuer = JwtInfos.Issuer,
+                    ValidAudience = JwtInfos.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtInfos.SecurityKey)),
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+
+
                 };
             });
             services.AddControllers().AddFluentValidation();
