@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
 using System.Threading.Tasks;
 using Hff.JwtProje.Business.Interfaces;
-using Microsoft.AspNetCore.Http;
+using Hff.JwtProje.Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hff.JwtProje.Api.Controllers
@@ -19,9 +17,42 @@ namespace Hff.JwtProje.Api.Controllers
             _productService = productService;
         }
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task< IActionResult> GetAll()
         {
-            return Ok();
+            return Ok( await _productService.GetAll());
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult>GetById(int id)
+        {
+            var product =await _productService.GetById(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok();
+            }
+           
+        }
+        [HttpPost]
+        public async Task<IActionResult>Add(Product product)
+        {
+            await _productService.Add(product);
+            return Created("", product);
+        }
+        [HttpPut]
+        public async Task<IActionResult> Update(Product product)
+        {
+            await _productService.Update(product);
+            return NoContent();
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deletedProduct =await _productService.GetById(id);
+            await _productService.Delete(deletedProduct.Id);
+            return NoContent();
         }
     }
 }
