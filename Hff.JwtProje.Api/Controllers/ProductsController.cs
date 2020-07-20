@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Hff.JwtProje.Business.Interfaces;
 using Hff.JwtProje.Entities.Concrete;
+using Hff.JwtProje.Entities.Dtos.ProductDtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hff.JwtProje.Api.Controllers
@@ -36,10 +37,18 @@ namespace Hff.JwtProje.Api.Controllers
            
         }
         [HttpPost]
-        public async Task<IActionResult>Add(Product product)
+        public async Task<IActionResult>Add(ProductAddDto productAddDto)
         {
-            await _productService.Add(product);
-            return Created("", product);
+            if (ModelState.IsValid)
+            {
+                await _productService.Add(new Product
+                {
+                    Name = productAddDto.Name
+                });
+                return Created("", productAddDto);
+            }
+            return BadRequest(productAddDto);
+   
         }
         [HttpPut]
         public async Task<IActionResult> Update(Product product)

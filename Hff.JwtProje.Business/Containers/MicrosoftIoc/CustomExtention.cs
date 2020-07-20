@@ -1,7 +1,10 @@
-﻿using Hff.JwtProje.Business.Concrete;
+﻿using FluentValidation;
+using Hff.JwtProje.Business.Concrete;
 using Hff.JwtProje.Business.Interfaces;
+using Hff.JwtProje.Business.ValidationRules.FluentValidation;
 using Hff.JwtProje.DataAccess.Concrete.EntityFrameworkCore.Repositories;
 using Hff.JwtProje.DataAccess.Interfaces;
+using Hff.JwtProje.Entities.Dtos.ProductDtos;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -24,8 +27,7 @@ namespace Hff.JwtProje.Business.Containers.MicrosoftIoc
             services.AddScoped<IAppRoleDal, EfAppRoleRepository>();
             services.AddScoped<IAppUserRoleService, AppUserRoleManager>();
             services.AddScoped<IAppUserRoleDal, EfAppUserRoleRepository>();
-            
-
+            services.AddTransient<IValidator<ProductAddDto>, ProductAddDtoValidator>();
 
         }
     }
